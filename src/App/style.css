@@ -1,0 +1,37 @@
+.th-background {
+  min-height: 100vh;
+  background: linear-gradient(to top right, #fc2c77 0%, #6c4079 100%);
+}
+
+.th-wraper {
+  margin: 0 auto;
+  max-width: 700px;
+}
+
+.th-card-body {
+  padding: 48px 42px;
+}
+
+.th-header {
+  font-family: "Nunito", sans-serif;
+  font-size: 36px;
+}
+
+.th-coming-soon {
+  height: 70vh;
+  margin: 4vh 0 0 0;
+}
+
+.th-coming-soon-header {
+  color: #319788;
+  font-size: 28px;
+}
+
+@media only screen and (max-width: 768px) {
+  .th-card-body {
+    padding: 32px 24px;
+  }
+  .th-header {
+    font-size: 24px;
+  }
+}
