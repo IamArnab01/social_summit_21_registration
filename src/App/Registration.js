@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { Select, notification } from "antd";
 import { API } from "../backend";
+
+const { Option } = Select;
 
 class Registration extends Component {
   constructor(props) {
@@ -13,22 +16,51 @@ class Registration extends Component {
       year_of_study: "",
       mobile: "",
       email: "",
-      events: "",
+      events: [],
+      options: [
+        { name: "Case Studies" },
+        { name: "Workshops" },
+        { name: "Imbibe and Implement" },
+        { name: "Action Plan" },
+        { name: "Turn-Coat" },
+        { name: "Treasure Hunt" },
+        { name: "Sociothon" },
+        { name: "Monologue" },
+        { name: "Policy Case" },
+        { name: "Innovision-Work Presentation" },
+        { name: "Model United Nations" },
+        {
+          name: "Strategic Digital Marketing",
+        },
+      ],
     };
     this.handleChange = this.handleChange.bind(this);
     this.toggleChange = this.toggleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleEvents = this.handleEvents.bind(this);
   }
 
+  refreshPage = () => {
+    window.location.reload();
+  };
+
   handleChange = (event) => {
-    // console.log(event.target.name, event.target.value);
     this.setState({ [event.target.name]: event.target.value });
   };
 
   toggleChange = (e) => {
-    // console.log(e.target.id, e.target.value);
     this.setState({
       [e.target.id]: e.target.value,
+    });
+  };
+
+  handleEvents = (values) => {
+    const { events } = this.state;
+    for (let i = 0; i < values.length; i++) {
+      events[i] = values[i];
+    }
+    this.setState({
+      events,
     });
   };
 
@@ -53,13 +85,35 @@ class Registration extends Component {
         },
         body: JSON.stringify(newUser),
       })
-      .then(console.log("success"))
+      .then(this.success("success"), this.refreshPage())
       .catch((err) => {
-        console.log(err);
-      });
+        this.error("error", err);
+      }, this.refreshPage());
+  };
+
+  success = (type) => {
+    notification[type]({
+      message: "Sucess Message",
+      description: "Your response is submitted succesfully.",
+    });
+  };
+
+  error = (type, err) => {
+    console.log(err);
+    notification[type]({
+      message: "Error Message",
+      description: "Error in submitting the response, please try again.",
+    });
   };
 
   render() {
+    const children = this.state.options.map((item, id) => {
+      return (
+        <Option key={id} value={item.name}>
+          {item.name}
+        </Option>
+      );
+    });
     return (
       <div className="th-background pt-5  pb-5">
         <div className="th-wraper container">
@@ -200,16 +254,16 @@ class Registration extends Component {
                     <label for="validationDefault04">
                       Tentative events you may want to perticipate
                     </label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="validationDefault08"
-                      name="events"
-                      value={this.state.events}
-                      onChange={this.handleChange}
-                      placeholder="Tentative events you may want to perticipate"
+                    <Select
+                      mode="multiple"
+                      allowClear
+                      style={{ width: "100%" }}
+                      placeholder="Please select"
+                      onChange={this.handleEvents}
                       required
-                    />
+                    >
+                      {children}
+                    </Select>
                   </div>
                 </div>
                 <button class="btn btn-primary" type="submit">
