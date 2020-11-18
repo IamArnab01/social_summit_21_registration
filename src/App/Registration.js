@@ -17,6 +17,7 @@ class Registration extends Component {
       mobile: "",
       email: "",
       events: [],
+      ref_ca: "",
       options: [
         { name: "Case Studies" },
         { name: "Workshops" },
@@ -41,7 +42,9 @@ class Registration extends Component {
   }
 
   refreshPage = () => {
-    window.location.reload();
+    setTimeout(() => {
+      window.location.reload();
+    }, 1500);
   };
 
   handleChange = (event) => {
@@ -75,6 +78,7 @@ class Registration extends Component {
       year_of_study: this.state.year_of_study,
       stream: this.state.stream,
       events: this.state.events,
+      ref_ca: this.state.ref_ca,
     };
 
     axios
@@ -85,10 +89,14 @@ class Registration extends Component {
         },
         body: JSON.stringify(newUser),
       })
-      .then(this.success("success"), this.refreshPage())
+      .then((res) => {
+        if (res.status === 200) {
+          this.success("success");
+        }
+      })
       .catch((err) => {
         this.error("error", err);
-      }, this.refreshPage());
+      });
   };
 
   success = (type) => {
@@ -96,6 +104,7 @@ class Registration extends Component {
       message: "Sucess Message",
       description: "Your response is submitted succesfully.",
     });
+    this.refreshPage();
   };
 
   error = (type, err) => {
@@ -104,6 +113,7 @@ class Registration extends Component {
       message: "Error Message",
       description: "Error in submitting the response, please try again.",
     });
+    this.refreshPage();
   };
 
   render() {
@@ -250,7 +260,7 @@ class Registration extends Component {
                       required
                     />
                   </div>
-                  <div class="col-md-12 col-xs-12 mb-3">
+                  <div class="col-md-12 col-xs-12">
                     <label for="validationDefault04">
                       Tentative events you may want to perticipate
                     </label>
@@ -264,6 +274,21 @@ class Registration extends Component {
                     >
                       {children}
                     </Select>
+                  </div>
+                  <div class="col-md-12 col-xs-12 mb-3">
+                    <label for="validationDefault03">
+                      Reference CA-ID (if applicable)
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="validationDefault08"
+                      name="ref_ca"
+                      value={this.state.ref_ca}
+                      onChange={this.handleChange}
+                      placeholder="Referenece CA ID "
+                      required
+                    />
                   </div>
                 </div>
                 <button class="btn btn-primary" type="submit">
