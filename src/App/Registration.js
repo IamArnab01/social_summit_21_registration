@@ -260,7 +260,7 @@ class Registration extends Component {
                       required
                     />
                   </div>
-                  <div class="col-md-12 col-xs-12">
+                  <div class="col-md-12 col-xs-12 mb-3">
                     <label for="validationDefault04">
                       Tentative events you may want to perticipate
                     </label>
